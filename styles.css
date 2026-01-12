@@ -36,11 +36,11 @@
 
 body {
     font-family: var(--font-body);
-    color: var(--scroll-text);
-    background-color: var(--scroll-bg);
+    color: var(--text-main);
+    background-color: var(--bg-color);
     line-height: 1.6;
     overflow-x: hidden;
-    transition: background-color 0.8s ease, color 0.8s ease;
+    transition: var(--transition-smooth);
 }
 
 h1,
@@ -102,22 +102,34 @@ header {
     top: 0;
     width: 100%;
     z-index: 1000;
-    background-color: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(236, 236, 236, 0.3);
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     transition: var(--transition-smooth);
 }
 
 header:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 header.scrolled {
-    background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
-    height: 70px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: 65px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Scroll Progress Bar */
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(to right, var(--text-main), #8e9eab);
+    z-index: 1001;
+    transition: width 0.1s ease;
 }
 
 header nav {
@@ -163,15 +175,32 @@ header nav {
 .nav-links a {
     text-decoration: none;
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1px;
+    transition: var(--transition-smooth);
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--text-main);
     transition: var(--transition-smooth);
 }
 
 .nav-links a:hover {
     color: var(--text-main);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 .btn-primary {
@@ -268,7 +297,7 @@ header nav {
 .pricing-card {
     background: var(--white);
     padding: var(--spacing-lg) var(--spacing-md);
-    border-radius: 16px;
+    border-radius: 20px;
     border: 1px solid var(--border-color);
     text-align: center;
     transition: var(--transition-smooth);
@@ -277,6 +306,7 @@ header nav {
     align-items: center;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
 }
 
 .pricing-card::before {

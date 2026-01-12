@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('visit_count', visits);
     console.log(`%c Total visits historically: ${visits} `, 'background: #2d3436; color: #fff; padding: 5px; border-radius: 3px;');
 
-    // IntersectionObserver for section highlighting and background color transitions
+    // IntersectionObserver for section highlighting
     const sections = document.querySelectorAll('section');
     const sectionObserverOptions = {
         threshold: 0.3
@@ -18,39 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active-section');
-
-                // Dynamic theme changes based on section
-                const sectionId = entry.target.id;
-                const body = document.body;
-
-                if (sectionId === 'hero') {
-                    body.style.setProperty('--scroll-bg', '#ffffff');
-                    body.style.setProperty('--scroll-text', '#2d3436');
-                } else if (sectionId === 'services') {
-                    body.style.setProperty('--scroll-bg', '#f8f9fa');
-                    body.style.setProperty('--scroll-text', '#2d3436');
-                } else if (sectionId === 'pricing') {
-                    body.style.setProperty('--scroll-bg', '#2d3436');
-                    body.style.setProperty('--scroll-text', '#ffffff');
-                    // Adjust pricing cards contrast
-                    document.querySelectorAll('.pricing-card').forEach(card => {
-                        card.style.background = 'rgba(255, 255, 255, 0.05)';
-                        card.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                        card.querySelectorAll('.service, .price').forEach(el => el.style.color = '#fff');
-                    });
-                } else if (sectionId === 'about') {
-                    body.style.setProperty('--scroll-bg', '#ffffff');
-                    body.style.setProperty('--scroll-text', '#2d3436');
-                    // Reset pricing cards if we were in pricing
-                    document.querySelectorAll('.pricing-card').forEach(card => {
-                        card.style.background = '';
-                        card.style.borderColor = '';
-                        card.querySelectorAll('.service, .price').forEach(el => el.style.color = '');
-                    });
-                } else if (sectionId === 'contact') {
-                    body.style.setProperty('--scroll-bg', '#f0f2f5');
-                    body.style.setProperty('--scroll-text', '#2d3436');
-                }
             } else {
                 entry.target.classList.remove('active-section');
             }
@@ -82,17 +49,27 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(elem);
     });
 
-    // Parallax Effect for Hero
+    // Parallax & Scroll Effects
     window.addEventListener('scroll', () => {
         const scrolled = window.scrollY;
-        const hero = document.getElementById('hero');
-        if (hero) {
-            hero.style.backgroundPositionY = -(scrolled * 0.5) + 'px';
+        const totalHeight = document.body.scrollHeight - window.innerHeight;
+        const progress = (scrolled / totalHeight) * 100;
+
+        // Progress Bar
+        const progressBar = document.getElementById('progress-bar');
+        if (progressBar) {
+            progressBar.style.width = `${progress}%`;
         }
 
-        // Header authenticated scroll effect
+        // Hero Parallax
+        const hero = document.getElementById('hero');
+        if (hero) {
+            hero.style.backgroundPositionY = -(scrolled * 0.3) + 'px';
+        }
+
+        // Header scroll effect
         const header = document.getElementById('header');
-        if (scrolled > 50) {
+        if (scrolled > 30) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
